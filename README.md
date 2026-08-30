@@ -1,27 +1,49 @@
 # VRChat-ALT
 
-VRChat Any-Local-Test
+VRChat Any-Local-Test (suck name tbh)
 
-tbh this name like ass, 
+Launch a local `.vrcw` world directly in VRChat.
 
-but you might want debug any map without EAC, this is similar with other game's `Launch (No EAC) `
+You might want debug/play any map without EAC, this is basically a 'Launch (No EAC)'
+You can't play with your friends, and network still required, all thanks to VRChat Inc they love to know your privacy so hard.
 
-which you can't play online with friend, but you can literally reverse engineer like normal game.
+## Windows
 
-# Beginning
-0. Download the `DirectLocalTest.bat` from repo.
-1. Create empty folder and put `DirectLocalTest.bat` in.
-2. Edit [Line 24](https://github.com/extremeblackliu/VRCLocalTest/blob/main/DirectLocalTest.bat#L24) AND [Line 25](https://github.com/extremeblackliu/VRCLocalTest/blob/main/DirectLocalTest.bat#L25) to your game folder.
-3. Put .vrcw file in folder same as where you put the `DirectLocalTest.bat`.
-4. Run `DirectLocalTest.bat`
-5. Follow the instruction.
+- Drop a `.vrcw` file or its folder onto `DirectLocalTest.bat`.
+- One-client desktop mode: drop it onto `LocalTest_fast.bat`.
+- Double-clicking a launcher asks for a world path. Press Enter without a path to use the newest `.vrcw` below the current directory.
 
-NOTE: Although most of the time two clients will join the same room even if they are not started in the same bat file (roomid is inconsistent). However, there is a chance that two clients will be isolated (roomid is inconsistent), in which case you need to manually specify the roomid
+The launcher asks whether to use VR mode. Enter `y` for VR; `n` or an empty answer uses Desktop mode.
 
-# How it works?
+The launcher reads Steam's registry entry and `libraryfolders.vdf`, so VRChat can be installed in any Steam library. If detection fails, it asks for `VRChat.exe`. `VRCHAT_PATH` may also point to the executable or its folder.
+
+## Linux
+
+Make the script executable once, then pass or drag a world path into the terminal:
+
+```bash
+chmod +x DirectLocalTest.sh
+./DirectLocalTest.sh /path/to/world.vrcw
+```
+
+With no path argument, the script asks for one. Press Enter without a path to search the current directory.
+
+The launcher uses the same VR question as Windows. An empty answer uses Desktop mode; `--fast` always uses Desktop mode.
+
+Options:
+
+```text
+--fast    launch one Desktop client without asking for the client count
+```
+
+The script checks the common native and Flatpak Steam locations, Steam library folders, `Proton - Experimental`, installed Proton versions, and `compatibilitytools.d`. If needed, set `VRCHAT_PATH`, `PROTON_PATH`, or `STEAM_COMPAT_DATA_PATH` explicitly.
+
+# How it works
 same as what the VRCSDK does, generate 10 length random number and as roomId.
-```cs
+
+```
 string randomDigits = Tools.GetRandomDigits(10);
 string text4 = "--url=create?roomId=" + randomDigits + "&hidden=true&name=BuildAndRun&url=file:///" + text;
 ```
+
 then locate the file with prefix `file:///` + path to `.vrcw`
